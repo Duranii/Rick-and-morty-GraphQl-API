@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import RickAndMortyCharacter from "./RickAndMortyCharacter";
+import CharacterDetail from "./characterDetails/[slug]";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <Router>
+      <Routes>
+        <Route path="/" element={<RickAndMortyCharacter />} />
+        <Route path="/character/:id" element={<CharacterDetail />} />
+      </Routes>
+    </Router>
+  </QueryClientProvider>
+);
 
 export default App;
