@@ -9,11 +9,14 @@ import Logo from "../src/assets/tt.webp";
 
 const client = new GraphQLClient(process.env.REACT_APP_API_URL);
 
-const fetchData = async (page, gender, searchQuery) => {
+const fetchData = async (page, gender, searchQuery, species) => {
   try {
     const query = gql`
-      query GetCharacters($page: Int!, $gender: String, $searchQuery: String) {
-        characters(page: $page, filter: { gender: $gender, name: $searchQuery }) {
+      query GetCharacters($page: Int!, $gender: String, $searchQuery: String, $species: String) {
+        characters(
+          page: $page
+          filter: { gender: $gender, name: $searchQuery, species: $species }
+        ) {
           results {
             id
             name
@@ -31,7 +34,7 @@ const fetchData = async (page, gender, searchQuery) => {
       }
     `;
 
-    const data = await client.request(query, { page, gender, searchQuery });
+    const data = await client.request(query, { page, gender, searchQuery, species });
     return data.characters;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -44,9 +47,10 @@ const RickAndMortyCharacter = () => {
   const [selectedGender, setSelectedGender] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [selectedSpecies, setSelectedSpecies] = useState("");
   const { data, isLoading, isError } = useQuery(
-    ["rickAndMortyData", currentPage, selectedGender, debouncedSearchQuery],
-    () => fetchData(currentPage, selectedGender, debouncedSearchQuery)
+    ["rickAndMortyData", currentPage, selectedGender, debouncedSearchQuery, selectedSpecies],
+    () => fetchData(currentPage, selectedGender, debouncedSearchQuery, selectedSpecies)
   );
 
   const handlePageChange = (event, value) => {
@@ -66,18 +70,24 @@ const RickAndMortyCharacter = () => {
     }, 2000); // Adjust the delay as needed
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  const handleSpeciesChange = (event) => {
+    setSelectedSpecies(event.target.value);
+  };
+
+  if (isLoading) return <div className="text-center">Loading...</div>;
 
   if (isError) return <div>Error fetching data</div>;
 
   return (
     <div className="bg-slate-600">
-      <div className="flex items-center justify-between px-14 pt-14">
-        <img className="h-28 cursor-pointer" src={Logo} alt="logo" />
+      <div className="flex flex-wrap items-center justify-between px-4 sm:px-14 pt-14">
+        <div className="flex justify-center items-center sm:justify-start">
+          <img className="h-20 sm:h-28 cursor-pointer" src={Logo} alt="logo" />
+        </div>
 
-        <div className="flex justify-end">
+        <div className="flex flex-wrap justify-start sm:justify-end mt-7 sm:mt-0">
           <select
-            className="w-60 text-2xl p-2 rounded cursor-pointer"
+            className="w-60 mt-4 text-2xl p-2 rounded cursor-pointer"
             value={selectedGender}
             onChange={handleGenderChange}
           >
@@ -85,11 +95,28 @@ const RickAndMortyCharacter = () => {
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="unknown">Unknown</option>
+            <option value="Genderless">Genderless</option>
+          </select>
+          <select
+            className="w-60 mt-4 text-2xl p-2 rounded cursor-pointer ml-0 sm:ml-4"
+            value={selectedSpecies}
+            onChange={handleSpeciesChange}
+          >
+            <option value="">All Species</option>
+            <option value="Human">Human</option>
+            <option value="Humanoid">Humanoid</option>
+            <option value="Alien">Alien</option>
+            <option value="Robot">Robot</option>
+            <option value="Animal">Animal</option>
+            <option value="Poopybutthole">Poopybutthole</option>
+            <option value="Mythalogical Creature">Mythalogical Creature</option>
+            <option value="unknown">Unknown</option>
+            <option value="Disease">Disease</option>
           </select>
           <input
             type="text"
             placeholder="Search by name"
-            className="ml-4 w-60 text-2xl p-2 rounded"
+            className="ml-0 sm:ml-4 w-60 text-2xl p-2 rounded mt-4"
             value={searchQuery}
             onChange={handleSearchInputChange}
           />
@@ -127,18 +154,18 @@ const RickAndMortyCharacter = () => {
             variant="outlined"
             shape="rounded"
             sx={{
-              '& .MuiPaginationItem-page': {
-                color: 'white',
-                border: '1px solid white'
+              "& .MuiPaginationItem-page": {
+                color: "white",
+                border: "1px solid white",
               },
-              '& .MuiPaginationItem-root.Mui-selected': {
-                color: 'white',
-                border: '5px solid purple',
-                background: 'purple'
+              "& .MuiPaginationItem-root.Mui-selected": {
+                color: "white",
+                border: "5px solid purple",
+                background: "purple",
               },
-              '& .MuiPaginationItem-icon': {
-                color: 'white',
-                border: '1px solid white',
+              "& .MuiPaginationItem-icon": {
+                color: "white",
+                border: "1px solid white",
               },
             }}
           />
