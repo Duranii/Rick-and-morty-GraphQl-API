@@ -77,7 +77,7 @@ const RickAndMortyCharacter = () => {
     setSelectedSpecies(event.target.value);
   };
 
-  if (isLoading) return <div className="text-center text-[100px] py-80">Loading...</div>;
+  if (isLoading) return <div className="text-center text-[100px] flex justify-center items-center h-screen">Loading...</div>;
 
   if (isError) return <div>Error fetching data</div>;
 

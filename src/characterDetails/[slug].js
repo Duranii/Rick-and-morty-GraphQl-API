@@ -57,7 +57,11 @@ const CharacterDetail = () => {
   };
 
   if (loading) {
-    return <div className="text-center text-[100px] py-80">Loading...</div>;
+    return (
+      <div className="text-center text-[100px] flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
@@ -81,45 +85,47 @@ const CharacterDetail = () => {
   }
 
   return (
-    <div className="bg-slate-600 flex justify-center py-44 h-[100vh]">
-      <div className="h-[500px] flex text-white bg-[#3c3e44] rounded-2xl">
-        <img
-          className="w-[600px] h-[500px] rounded-2xl"
-          src={character.image}
-          alt={character.name}
-        />
-        <div className="px-16 w-[600px]">
-          <p className="pt-16 pb-4 text-5xl font-extrabold underline">
-            {character.name}
-          </p>
+    <div className="bg-slate-600 flex justify-center py-44 h-full lg:h-[100vh]">
+      <div className="flex justify-center items-center px-2 sm:px-0">
+        <div className="h-full lg:h-[500px] lg:flex text-white bg-[#3c3e44] rounded-2xl">
+          <img
+            className="w-full sm:w-[600px] h-[500px] rounded-2xl"
+            src={character.image}
+            alt={character.name}
+          />
+          <div className="px-4 sm:px-16 w-full sm:w-[600px]">
+            <p className="pt-16 pb-4 text-3xl sm:text-5xl font-extrabold underline">
+              {character.name}
+            </p>
 
-          <div className="flex items-center gap-3">
-            <div
-              className={`h-5 w-5 rounded-full mt-1`}
-              style={{ backgroundColor: circleColor }}
-            ></div>{" "}
-            <p className="text-2xl text-center">{character.status}</p>
+            <div className="flex items-center gap-3">
+              <div
+                className={`h-5 w-5 rounded-full mt-1`}
+                style={{ backgroundColor: circleColor }}
+              ></div>{" "}
+              <p className="text-2xl text-center">{character.status}</p>
+            </div>
+
+            <p className="text-2xl sm:text-3xl pb-3 pt-16">
+              <span className="text-[#9d9d9e] font-bold">Gender:</span>{" "}
+              {character.gender}
+            </p>
+
+            <p className="text-2xl sm:text-3xl">
+              <span className="text-[#9d9d9e] font-bold">Species:</span>{" "}
+              {character.species}
+            </p>
+
+            <p className="py-3 text-2xl sm:text-3xl">
+              <span className="text-[#9d9d9e] font-bold">Location:</span>{" "}
+              {character.location.name}
+            </p>
+
+            <p className="text-2xl sm:text-3xl pb-16 lg:pb-0">
+              <span className="text-[#9d9d9e] font-bold">Created:</span>{" "}
+              {character.created}
+            </p>
           </div>
-
-          <p className="text-3xl pb-3 pt-16">
-            <span className="text-[#9d9d9e] font-bold">Gender:</span>{" "}
-            {character.gender}
-          </p>
-
-          <p className="text-3xl">
-            <span className="text-[#9d9d9e] font-bold">Species:</span>{" "}
-            {character.species}
-          </p>
-
-          <p className="py-3 text-3xl">
-            <span className="text-[#9d9d9e] font-bold">Location:</span>{" "}
-            {character.location.name}
-          </p>
-
-          <p className="text-3xl">
-            <span className="text-[#9d9d9e] font-bold">Created:</span>{" "}
-            {character.created}
-          </p>
         </div>
       </div>
     </div>
