@@ -57,7 +57,7 @@ const CharacterDetail = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center text-[100px] py-80">Loading...</div>;
   }
 
   if (error) {

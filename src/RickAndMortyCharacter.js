@@ -55,8 +55,11 @@ const RickAndMortyCharacter = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    window.history.pushState({}, "", `page=${value}`);
+    const queryParams = new URLSearchParams(window.location.search);
+    queryParams.set('page', value);
+    window.history.pushState({}, "", `?${queryParams.toString()}`);
   };
+  
 
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
@@ -64,17 +67,17 @@ const RickAndMortyCharacter = () => {
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
-    // Debouncing the search input
+    
     setTimeout(() => {
       setDebouncedSearchQuery(event.target.value);
-    }, 2000); // Adjust the delay as needed
+    }, 2000); 
   };
 
   const handleSpeciesChange = (event) => {
     setSelectedSpecies(event.target.value);
   };
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading) return <div className="text-center text-[100px] py-80">Loading...</div>;
 
   if (isError) return <div>Error fetching data</div>;
 
